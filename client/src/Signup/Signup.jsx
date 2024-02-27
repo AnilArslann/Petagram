@@ -1,46 +1,33 @@
 import './Signup.css';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
-import axios from 'axios';
-import {useNavigate} from 'react-router-dom';
+import { useContext } from 'react';
+import { AuthContext } from '../Context/authContext';
+import { Alert } from '@mui/material';
 
 function Signup() {
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const navigate=useNavigate();
-
-    function handleSubmit(e){
-        e.preventDefault();
-        if(password !== confirmPassword){
-            alert('Passwords do not match');
-            return;
-        }
-        axios.post('http://localhost:3000/api/user/signup', {username, password,email})
-        .then((res)=>{
-            console.log('Register Response: ', res);
-            if(res.status===200){
-               navigate('/login');
-            }
-        }
-        )
-        .catch((err)=>{
-            console.log('Register Error: ', err);
-        }
-        )
-
-    }
+    const {
+      registerInfo,
+      updateRegisterInfo,
+      registerUser,
+      registerError,
+      isRegisterLoading,
+    } = useContext(AuthContext);
         
   return (
     <div>
       <h1>Signup</h1>
-      <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="Username" onChange={(e)=>{setUsername(e.target.value)}} />
-        <input type="email" placeholder="Email"  onChange={(e)=>{setEmail(e.target.value)}}/>
-        <input type="password" placeholder="Password" onChange={(e)=>{setPassword(e.target.value)}}/>
-        <input type="password" placeholder="Confirm Password" onChange={(e)=>{setConfirmPassword(e.target.value)}} />
-        <button type="submit">Signup</button>
+      <form onSubmit={registerUser}>
+        <input type="text" placeholder="Username" onChange={(e)=>{updateRegisterInfo({ ...registerInfo, username: e.target.value })}} />
+        <input type="email" placeholder="Email"  onChange={(e)=>{updateRegisterInfo({ ...registerInfo, email: e.target.value })}}/>
+        <input type="password" placeholder="Password" onChange={(e)=>{updateRegisterInfo({ ...registerInfo, password: e.target.value })}}/>
+        <input type="password" placeholder="Confirm Password" onChange={(e)=>{updateRegisterInfo({ ...registerInfo, passwordConfirm: e.target.value })}} />
+        <button type="submit"> {isRegisterLoading ? "Creating your account..." : "Signup"}</button>
+        {registerError?.error && (
+                <Alert variant="danger">
+                  <b>{`Error status code: ${registerError?.status}`}</b>
+                  <p>{registerError?.message}</p>
+                </Alert>
+              )}
       </form>
       <Link to='/login'>Already Have an Account</Link>
     </div>

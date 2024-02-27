@@ -13,6 +13,7 @@ export const AuthContextProvider = ({ children }) => {
     username: "",
     email: "",
     password: "",
+    passwordConfirm: "",
   });
   const [loginError, setLoginError] = useState(null);
   const [isLoginLoading, setIsLoginLoading] = useState(false);
@@ -46,6 +47,10 @@ export const AuthContextProvider = ({ children }) => {
 
       setIsRegisterLoading(true);
       setRegisterError(null);
+      if(registerInfo.password !== registerInfo.passwordConfirm){
+        setIsRegisterLoading(false);
+        return setRegisterError({error:true,message:'Passwords do not match', status:500});
+      }
 
       const response = await postRequest(
         `${baseUrl}/user/signup`,

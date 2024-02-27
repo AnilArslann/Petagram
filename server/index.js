@@ -23,6 +23,27 @@ app.post('/signup',(req,res)=>{
     );
 }
 );
+app.post('/login',(req,res)=>{
+    console.log('Login Request: ', req.body);
+    User.findOne({username:req.body.username})
+    .then((user)=>{
+        if(user){
+            if(user.password===req.body.password){
+                res.json(user);
+            }
+            else{
+                res.json({message:'Invalid Password'});
+            }
+        }
+        else{
+            res.json({message:'User not found'});
+        }
+    }
+    
+    )
+
+}
+)
 app.listen(port,()=>{
     console.log(`Server is running on port ${port}`);
 }

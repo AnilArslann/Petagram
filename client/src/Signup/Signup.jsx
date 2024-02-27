@@ -2,12 +2,14 @@ import './Signup.css';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
+import {useNavigate} from 'react-router-dom';
 
 function Signup() {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const navigate=useNavigate();
 
     function handleSubmit(e){
         e.preventDefault();
@@ -18,6 +20,9 @@ function Signup() {
         axios.post('http://localhost:3000/signup', {username, password,email})
         .then((res)=>{
             console.log('Register Response: ', res);
+            if(res.status===200){
+               navigate('/login');
+            }
         }
         )
         .catch((err)=>{

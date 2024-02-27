@@ -17,7 +17,7 @@ function Signup() {
             alert('Passwords do not match');
             return;
         }
-        axios.post('http://localhost:3000/signup', {username, password,email})
+        axios.post('http://localhost:3000/api/user/signup', {username, password,email})
         .then((res)=>{
             console.log('Register Response: ', res);
             if(res.status===200){

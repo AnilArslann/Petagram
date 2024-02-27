@@ -10,7 +10,7 @@ function Login() {
     function handleSubmit(e){
         e.preventDefault();
         console.log('Login Request: ', {username, password});
-        axios.post('http://localhost:3000/login', {username, password})
+        axios.post('http://localhost:3000/api/user/login', {username, password})
         .then((res)=>{
             console.log('Login Response: ', res);
             navigate('/home')

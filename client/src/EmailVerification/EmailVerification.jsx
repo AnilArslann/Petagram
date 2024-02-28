@@ -13,13 +13,12 @@ const EmailVerification = () => {
     const navigate = useNavigate();
 
     const emailToken = searchParams.get('emailToken');
-    console.log('Email token is :',emailToken);
 
     useEffect(()=>{
         (async()=>{
             if(user?.isVerified){
                 setTimeout(()=>{
-                    navigate('/');
+                    navigate('/home');
                 },2000);
             }
             else{
@@ -27,10 +26,11 @@ const EmailVerification = () => {
                     setLoading(true);
                     const res=await postRequest(`${baseUrl}/user/verify-email`,JSON.stringify({emailToken}));
                     setLoading(false);
-                    if(res.status===200){
-                        updateUser(res.data);
+                    if(res.isVerified){
+                        updateUser(res);
                     }
                     else{
+                        console.log('Error:',res);
                         setError(res);
                     }
                     
@@ -56,7 +56,7 @@ const EmailVerification = () => {
                 <Alert severity="success">Email Verified Successfully,redirecting...</Alert>
             </div>):
             (<div>
-                {error.error?(<Alert severity="error">{error.message}</Alert>):null}
+                {error?(<Alert severity="error">{error.message}</Alert>):null}
             </div>)}
 
 

@@ -57,28 +57,33 @@ const loginUser=async (req,res)=>{
 
 const verifyEmail= async (req,res)=>{
     try{
+     
         const emailToken=req.body.emailToken;
         if(!emailToken){
             return res.status(404).json({message:'Email Token Not Found'});
 
         }
-        const user= await User.findOne({emailToken})
+        console.log('Verify Email: ', emailToken)
+        const user= await User.findOne({emailToken:emailToken})
         .then((user)=>{
-            if(user){
+            if(user&&!user.isVerified){
                 user.isVerified=true;
-                user.emailToken=null;
                 user.save()
                 .then((user)=>{
                     res.json(user);
                 }
                 )
                 .catch((err)=>{
-                    res.json(err);
+                    res.status(404).json(err);
                 }
                 );
             }
+            else if (user.isVerified){
+                res.json({message:'Email is already verified'});
+            }
             else{
-                res.json({message:'User not found'});
+                res.status(404).json({message:'User not found'});
+                console.log('User not found');
             }
         })
     }

@@ -14,6 +14,8 @@ const userSchema = new mongoose.Schema({
         required: true
     },
 isVerified: { type: Boolean, default: false },
-emailToken: { type: String },});
+emailToken: { type: String },
+createdAt: { type: Date, default: Date.now },
+updatedAt: { type: Date, default: Date.now }});
 const User = mongoose.model('User', userSchema);
 module.exports=User;

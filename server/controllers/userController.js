@@ -3,6 +3,17 @@ const crypto = require('crypto');
 const User = require('../models/User');
 const {sendVerificationMail} = require('../utils/sendVerificationMail');
 
+function getPartitionDate(){
+    let date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Adding 1 to month as it is zero-based
+    const day = String(date.getDate()).padStart(2, '0');
+    let partitionDate = `${year}-${month}-${day}`;
+    return partitionDate;
+
+
+}
+
 const registerUser=async (req,res)=>{
     const username=req.body?.username;
     const email=req.body?.email;
@@ -20,6 +31,8 @@ const registerUser=async (req,res)=>{
     user.password = await bcrypt.hash(user.password, salt);
     user.emailToken = crypto.randomBytes(64).toString('hex');
     user.isVerified = false;
+    user.createdPartition = getPartitionDate();
+
     await user.save();
     sendVerificationMail(user);
     res.status(200).json(user);
@@ -39,6 +52,7 @@ const loginUser=async (req,res)=>{
         if(user){
             bcrypt.compare(req.body.password, user.password,(err,result)=>{
                 if(result){
+                    
                     res.json(user);
                 }
                 else{

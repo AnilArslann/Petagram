@@ -16,6 +16,8 @@ const userSchema = new mongoose.Schema({
 isVerified: { type: Boolean, default: false },
 emailToken: { type: String },
 createdAt: { type: Date, default: Date.now },
-updatedAt: { type: Date, default: Date.now }});
+updatedAt: { type: Date, default: Date.now },
+createdPartition:{type:String},
+loginPartitions:[{type:String,default:[]}]});
 const User = mongoose.model('User', userSchema);
 module.exports=User;

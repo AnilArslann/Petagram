@@ -44,7 +44,6 @@ export const AuthContextProvider = ({ children }) => {
   const registerUser = useCallback(
     async (e) => {
       e.preventDefault();
-
       setIsRegisterLoading(true);
       setRegisterError(null);
       if(registerInfo.password !== registerInfo.passwordConfirm){
@@ -59,7 +58,7 @@ export const AuthContextProvider = ({ children }) => {
 
       setIsRegisterLoading(false);
 
-      if (response.error) {
+      if (response?.error) {
         return setRegisterError(response);
       }
 

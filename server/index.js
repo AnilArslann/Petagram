@@ -7,8 +7,10 @@ const User=require('./models/User');
 const bcrypt=require('bcrypt');
 const crypto=require('crypto');
 
+require('dotenv').config();
 app.use(cors());
 app.use(express.json());
+
 
 const userRoute = require("./Routes/userRoute");
 app.use("/api/user", userRoute);

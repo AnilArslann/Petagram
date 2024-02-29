@@ -1,32 +1,36 @@
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const User = require('../models/User');
+const {sendVerificationMail} = require('../utils/sendVerificationMail');
 
 const registerUser=async (req,res)=>{
     const username=req.body?.username;
     const email=req.body?.email;
     const password=req.body?.password;
     console.log('Register User: ', req.body);
-    bcrypt.hash(password, 10)
-    .then(
-        (hash)=>{
-            const user=new User({
-                username,
-                email,
-                password:hash,
-                emailToken: crypto.randomBytes(64).toString('hex')
-            }
-            );
-            user.save()
-            .then((user)=>{
-                res.json(user);
-            }
-            )
-            .catch((err)=>{
-                res.status(500).json(err);
-            }
-            );
-        })
+    try{
+    let user = await User.findOne({ email:email,username:username });
+    if (user) return res.status(400).json("User already exists...");
+    user = new User({
+        username: username,
+        email: email,
+        password: password,
+    });
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(user.password, salt);
+    user.emailToken = crypto.randomBytes(64).toString('hex');
+    user.isVerified = false;
+    await user.save();
+    sendVerificationMail(user);
+    res.status(200).json(user);
+}
+catch(err){
+    console.log('Register User Error: ', err);
+    res.status(500).json(err);
+}
+
+
+
 };
 
 const loginUser=async (req,res)=>{

@@ -1,8 +1,10 @@
 import './AuthButton.sass';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect,useState } from 'react';
 
-function AuthButton({ text, ...props }) {
+function AuthButton({ ...props }) {
     const buttonRef = useRef(null);
+    let [done, setDone] = useState(false);
+
 
     useEffect(() => {
         const button = buttonRef.current;
@@ -29,6 +31,7 @@ function AuthButton({ text, ...props }) {
                 button.classList.remove('validate');
                 button.classList.add('done');
             }, 1250);
+            setDone(true);
         };
 
         button.addEventListener('click', handleClick);
@@ -39,8 +42,8 @@ function AuthButton({ text, ...props }) {
     }, []);
 
     return (
-        <button ref={buttonRef} {...props}>
-            {text}
+        <button ref={buttonRef} {...props} className='authButton'>
+            {done?'':props.text}
         </button>
     );
 }

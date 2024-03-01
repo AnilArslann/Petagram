@@ -34,7 +34,7 @@ function Login() {
         <form onSubmit={loginUser}>
           <input type="text" placeholder="Username" onChange={(e)=>{updateLoginInfo({ ...loginInfo, username: e.target.value })}}  value={loginInfo?.username}/>
           <input type="password" placeholder="Password"  onChange={(e)=>{updateLoginInfo({ ...loginInfo, password: e.target.value })}} value={loginInfo?.password}/>
-          <AuthButton  type="submit" isLoading={isLoginLoading}/>
+          <AuthButton  type="submit" isLoading={isLoginLoading} text='Login'/>
         </form>
       </div>
       

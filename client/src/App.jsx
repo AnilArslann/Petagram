@@ -1,5 +1,5 @@
 
-import './App.css';
+import './App.sass';
 import Signup from './Signup/Signup';
 import Login from './Login/Login';
 import EmailVerification from './EmailVerification/EmailVerification';
@@ -11,11 +11,11 @@ import Homepage from './Homepage/Homepage';
 function App() {
   const { user } = useContext(AuthContext);
   return (
-    <div className="App">
+    <div className="App" >
     
         <Routes>
-          <Route path="/signup" element={user?<Navigate to='/home'/>:<Signup />} />
-          <Route path="/login" element={user?<Navigate to='/home'/>:<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
           <Route path='/email-verification' element={<EmailVerification/>} />
           <Route path='/home' element={<Homepage/>} />
         </Routes>

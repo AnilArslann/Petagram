@@ -1,10 +1,16 @@
 $font: 'Roboto', sans-serif
 $primary: #596157
+$black: #000000
+$green: #3A4D39
 
 %forming
     padding:0
     margin:0
 
+%center
+    display: flex
+    align-items: center
+    justify-content: center
 
 form
     @extend %forming
@@ -25,7 +31,7 @@ form
             position: relative
             max-width: 500px
             margin: 20px auto
-            color:#3A4D39
+            color: $green
             margin-top: 40px
 
 
@@ -37,7 +43,7 @@ form
         position: absolute
         top: 50%
         left: 0
-        background: rgba(0,0,0,0.1)
+        background: rgba($black,0.1)
     h6:after
         content:" "
         display: block
@@ -46,23 +52,20 @@ form
         position: absolute
         top: 50%
         right: 0
-        background: rgba(0,0,0,0.1)
+        background: rgba(black,0.1)
     
    
 
 
 div.fluid-container
-    display: flex
-    align-items: center
-    justify-content: center
+    @extend %center
     width: 100%
     height: 100%
 
 div.login-part
     @extend %forming
-    display: flex
+    @extend %center
     flex-direction: column
-    align-items: center
     width: 100%
     height: 100%
     padding-top:5rem
@@ -75,25 +78,18 @@ div.login-part
         font-size: 3em
         color: #739072
         text-align: center
-        margin-top: 20px
-        margin-bottom: 150px
-    h1
-        @extend %forming
-        font-family: $font
-        font-size: 2em
-        color: #739072
-        text-align: center
-        margin-top: 2rem
-    
+        margin-top: 10px
+        margin-bottom: 100px
+
 
     div.bottomPart
         width: 100%
         
         p
             margin-top: 30px
-            color: #3A4D39
+            color: $green
             a
-                color: #3A4D39
+                color: $green
                 text-decoration: none
                 font-weight: bold
                 &:hover

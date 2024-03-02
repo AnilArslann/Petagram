@@ -1,6 +1,6 @@
 import './InputBox.sass';
 
-function AuthButton({ ...props }) {
+function InputBox({ ...props }) {
    
 
     return (
@@ -11,4 +11,4 @@ function AuthButton({ ...props }) {
     );
 }
 
-export default AuthButton;
+export default InputBox;

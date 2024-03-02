@@ -4,6 +4,7 @@ import { useContext,useState,useRef, useEffect } from 'react';
 import { AuthContext } from '../Context/authContext';
 import AuthButton from '../Components/AuthButton/AuthButton';
 import { useNavigate } from 'react-router-dom';
+import InputBox from '../Components/InputBox/InputBox';
 
 
 function Login() {
@@ -32,8 +33,8 @@ function Login() {
         <div className="logo">Petagram</div>
         <h1>Welcome to Petagram</h1>
         <form onSubmit={loginUser}>
-          <input type="text" placeholder="Username" onChange={(e)=>{updateLoginInfo({ ...loginInfo, username: e.target.value })}}  value={loginInfo?.username}/>
-          <input type="password" placeholder="Password"  onChange={(e)=>{updateLoginInfo({ ...loginInfo, password: e.target.value })}} value={loginInfo?.password}/>
+          <InputBox type='text' text='Username' onChange={(e)=>{updateLoginInfo({ ...loginInfo, username: e.target.value })}}  value={loginInfo?.username}></InputBox>
+          <InputBox type='password' text='Password' onChange={(e)=>{updateLoginInfo({ ...loginInfo, password: e.target.value })}} value={loginInfo?.password}></InputBox>
           <AuthButton  type="submit" isLoading={isLoginLoading} text='Login'/>
         </form>
       </div>

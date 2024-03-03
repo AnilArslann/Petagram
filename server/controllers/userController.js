@@ -110,4 +110,20 @@ const verifyEmail= async (req,res)=>{
     }
 };
 
-module.exports={registerUser,loginUser,verifyEmail};
+const getUserByMail=async (req,res)=>{
+    try{
+        const user=await User.findOne({email:req.body.email});
+        console.log('Get User By Mail: ', req.body.email, user)
+        if(user){
+        res.status(200).json(user);
+        }
+        else{
+            res.status(404).json({message:'User not found'});
+        }
+    }
+    catch(err){
+        res.status(404).json(err);
+    }
+};
+
+module.exports={registerUser,loginUser,verifyEmail,getUserByMail};

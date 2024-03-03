@@ -6,13 +6,21 @@ import AuthButton from '../Components/AuthButton/AuthButton';
 import { useNavigate } from 'react-router-dom';
 import InputBox from '../Components/InputBox/InputBox';
 import SignWithGoogle from '../Components/SignWithGoogle/SignWithGoogle';
+import {useGoogleLogin} from '@react-oauth/google';
+import axios from 'axios';
+import { postRequest,baseUrl } from '../utils/service';
 
 
 function Login() {
   const { loginInfo, updateLoginInfo, loginUser, loginError, isLoginLoading,user } =
     useContext(AuthContext);
   const navigate = useNavigate();
-  let [loading, isloading] = useState(false);
+  let [mail,setMail]=useState('');
+  let [google,setgoogle]=useState({});
+  const loginGoogle = useGoogleLogin({
+    onSuccess: (codeResponse) => setgoogle(codeResponse),
+    onError: (error) => console.log('Login Failed:', error)
+});
   useEffect(() => {
     if(user){
       setTimeout(()=>{
@@ -20,7 +28,44 @@ function Login() {
 
       },500);
     }
-  },[isLoginLoading])
+  },[isLoginLoading]);
+
+  useEffect(
+    () => {
+        if (google) {
+            console.log('Google token is ', google.access_token);
+            axios
+                .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${google.access_token}`, {
+                    headers: {
+                        Authorization: `Bearer ${google.access_token}`,
+                        Accept: 'application/json'
+                    }
+                })
+                .then((res) => {
+                    setMail(res.data.email);
+
+                })
+                .catch((err) => console.log(err));
+        }
+    },
+    [ google ]
+);
+useEffect(()=>{
+  if(mail&&mail!=''){
+    const fetchData=async()=>{
+      let res=await postRequest(`${baseUrl}/user/mail`,JSON.stringify({email:mail}));
+      if(res){
+        localStorage.setItem('User',JSON.stringify(res));
+        navigate('/home');
+      }
+      else{
+        navigate('/signup');
+    }
+
+  
+    }
+    fetchData();
+  }},[mail]);
 
 
 
@@ -43,7 +88,7 @@ function Login() {
       
       <div className="bottomPartLogin">
         
-        <SignWithGoogle></SignWithGoogle>
+        <SignWithGoogle onClick={loginGoogle}></SignWithGoogle>
         <p>Don't have an account? <a href='/signup'>Sign up</a></p>
 
       </div>

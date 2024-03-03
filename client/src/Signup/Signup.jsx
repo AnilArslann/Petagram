@@ -1,19 +1,29 @@
 import './Signup.sass';
-import { Link } from 'react-router-dom';
-import { useContext } from 'react';
+import { Link,useNavigate } from 'react-router-dom';
+import { useContext,useEffect } from 'react';
 import { AuthContext } from '../Context/authContext';
 import { Alert } from '@mui/material';
 import InputBox from '../Components/InputBox/InputBox';
 import AuthButton from '../Components/AuthButton/AuthButton';
 
 function Signup() {
+  const navigate = useNavigate();
     const {
       registerInfo,
       updateRegisterInfo,
       registerUser,
       registerError,
       isRegisterLoading,
+      user
     } = useContext(AuthContext);
+    useEffect(() => {
+      if(user){
+        setTimeout(()=>{
+          navigate('/home');
+  
+        },500);
+      }
+    },[isRegisterLoading])
         
   return (
     <div className='fluid-container row'>

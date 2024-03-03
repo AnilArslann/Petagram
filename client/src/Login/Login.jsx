@@ -25,14 +25,14 @@ function Login() {
 
 
   return (
-    <div className='fluid-container row'>
+    <div className='fluid-container row w-100'>
       <div className='col'>
         <p>iMAGE</p>
 
       </div>
       <div className='col login-part '>
         <div className="logo">Petagram</div>
-        <form onSubmit={loginUser}>
+        <form onSubmit={loginUser} className='loginForm'>
           <InputBox type='text' text='Username' onChange={(e)=>{updateLoginInfo({ ...loginInfo, username: e.target.value })}}  value={loginInfo?.username}></InputBox>
           <InputBox type='password' text='Password' onChange={(e)=>{updateLoginInfo({ ...loginInfo, password: e.target.value })}} value={loginInfo?.password}></InputBox>
           <AuthButton  type="submit" isLoading={isLoginLoading} text='Login'/>
@@ -41,7 +41,7 @@ function Login() {
         </form>
 
       
-      <div className="bottomPart">
+      <div className="bottomPartLogin">
         
         <SignWithGoogle></SignWithGoogle>
         <p>Don't have an account? <a href='/signup'>Sign up</a></p>

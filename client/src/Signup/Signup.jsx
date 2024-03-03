@@ -1,8 +1,10 @@
-import './Signup.css';
+import './Signup.sass';
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from '../Context/authContext';
 import { Alert } from '@mui/material';
+import InputBox from '../Components/InputBox/InputBox';
+import AuthButton from '../Components/AuthButton/AuthButton';
 
 function Signup() {
     const {
@@ -14,14 +16,18 @@ function Signup() {
     } = useContext(AuthContext);
         
   return (
-    <div>
-      <h1>Signup</h1>
-      <form onSubmit={registerUser}>
-        <input type="text" placeholder="Username" onChange={(e)=>{updateRegisterInfo({ ...registerInfo, username: e.target.value })}} />
-        <input type="email" placeholder="Email"  onChange={(e)=>{updateRegisterInfo({ ...registerInfo, email: e.target.value })}}/>
-        <input type="password" placeholder="Password" onChange={(e)=>{updateRegisterInfo({ ...registerInfo, password: e.target.value })}}/>
-        <input type="password" placeholder="Confirm Password" onChange={(e)=>{updateRegisterInfo({ ...registerInfo, passwordConfirm: e.target.value })}} />
-        <button type="submit"> {isRegisterLoading ? "Creating your account..." : "Signup"}</button>
+    <div className='fluid-container row'>
+      <div className='col'>
+        <p>iMAGE</p>
+      </div>
+      <div className='col signup-part'>
+      <div className="logo">Petagram</div>
+      <form onSubmit={registerUser} className='registerForm'>
+        <InputBox type='text' text='Username' onChange={(e)=>{updateRegisterInfo({ ...registerInfo, username: e.target.value })}}></InputBox>
+        <InputBox type='email' text='Email' onChange={(e)=>{updateRegisterInfo({ ...registerInfo, email: e.target.value })}}></InputBox>
+        <InputBox type='password' text='Password' onChange={(e)=>{updateRegisterInfo({ ...registerInfo, password: e.target.value })}}></InputBox>
+        <InputBox type='password' text='Confirm Password' onChange={(e)=>{updateRegisterInfo({ ...registerInfo, passwordConfirm: e.target.value })}}></InputBox>
+        <AuthButton type="submit" isLoading={isRegisterLoading} text='Signup'/>
         {registerError?.error && (
                 <Alert variant="danger">
                   <b>{`Error status code: ${registerError?.status}`}</b>
@@ -29,8 +35,11 @@ function Signup() {
                 </Alert>
               )}
       </form>
-      <Link to='/login'>Already Have an Account</Link>
+      <div className="bottomPartSignup">
+        <p>Already have an account? <Link to='/login'>Login</Link></p>
+      </div>
     </div>
+  </div>
   );
 }
 
